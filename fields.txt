@@ -1,0 +1,35 @@
+{
+    "topText": {
+        "label": "Top Text Area",
+        "type": "textfield",
+        "value": ""
+    },
+    "bottomText": {
+        "label": "Bottom Text Area",
+        "type": "textfield",
+        "value": ""
+    },
+    "topColor": {
+        "label": "Top Text Color",
+        "type": "colorpicker",
+        "value": "#fdb336"
+    },
+    "bottomColor": {
+        "label": "Bottom Text Color",
+        "type": "colorpicker",
+        "value": "#ffffff"
+    },
+    "backgroundColor": {
+        "label": "Background Color",
+        "type": "colorpicker",
+        "value": "#23324b"
+    },
+    "bgColorOpacity": {
+        "label": "Background Color Opacity",
+        "type": "slider",
+        "value": "80",
+        "min": 0,
+        "max": 100,
+        "steps": 1
+    }
+}

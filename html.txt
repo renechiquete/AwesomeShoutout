@@ -1,0 +1,16 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<div id="placeholder"></div>
+<div id="box"></div>
+
+<div id="containerMain"></div>
+
+<div id="video">
+    <video id="vid" width="80%" height="100%" preload="none">
+        <source src="" type="video/webm">
+    </video>
+</div>
+
+<div id="containerSub"></div>
+
+<div id="image"></div>
+

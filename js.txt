@@ -1,0 +1,115 @@
+let globalCooldown = 15; //seconds
+
+let queue = $("#placeholder");
+let emoticons = [];
+
+window.addEventListener('onEventReceived', function (obj) {
+    if (obj.detail.listener !== "message") return;
+    
+  	let data = obj.detail.event.data;
+  
+  	if (data["displayName"] == "StreamElements"	) return;
+  
+    let message = data["text"];
+    let words = message.split(" ");
+    let results = words.filter(value => -1 !== emoticons.indexOf(value.toLowerCase()));
+  
+  	const listener = obj.detail.listener.split("-")[0];
+    const event = obj.detail.event;
+  	var command = event["data"]["text"].split(" ")[0];
+  
+  	var badge1 = event["data"]["badges"][0]["type"];
+  	var badge2 = event["data"]["badges"][1]["type"];
+  	var badge3 = event["data"]["badges"][2]["type"];
+
+  	if (command === '!so' && ( badge1 === 'moderator' || badge2 === 'moderator' || badge3 === 'moderator' || badge1 === 'broadcaster' ) ) {
+      var soname = event["data"]["text"].split(" ")[1];
+      results = Array.from(new Set(results)); //getting unique words
+      playVid(soname);
+    } 
+
+
+});
+let cooldown = 0;
+
+const videosData = {
+    "streamer1": {
+        "video": "https://URL.for.video.mp4",
+        "maintext": "The first streamer",
+        "subtext": "twitch.tv/streamer1"
+    },
+    "streamer2": {
+        "video": "https://URL.for.video.mp4",
+        "maintext": "The second streamer",
+        "subtext": "twitch.tv/streamer2"
+    }
+  };
+
+function playVid(soname) {
+    const name = soname.toLowerCase();
+    let playv = false;
+
+    console.log('before');
+
+    if (!(name in videosData)) {
+		return;
+    }
+
+    let userVid = videosData[name];
+	let mainText = "Awesome shoutout!!!";
+	let subText = 'Twitch.tv/'+soname;
+	
+    if("maintext" in userVid){
+        mainText = userVid["maintext"];
+    }
+	
+	if("subtext" in userVid){
+        subText = userVid["subtext"];
+    }
+
+    document.querySelector("video").setAttribute("src", userVid["video"]);
+
+	setTexts(mainText, subText);
+	
+	var vid = document.getElementById("vid");
+	var goalAudio = document.getElementById("goalAudio");
+	var soundVolume = 10;
+	vid.volume = soundVolume * .01;
+	vid.play();
+	$("#vid").fadeIn("slow");
+
+	$('#vid').on('ended', function () {
+		$("#vid").fadeOut("slow");
+		$("#vid")[0].pause();
+	});
+
+}
+
+function setTexts(mtext, sText) {
+    const animation = 'wobble';
+
+    let shoutout = document.createElement('div');
+    shoutout.setAttribute("id", "mainText");
+    
+    let stname = document.createElement('div');
+    stname.setAttribute("id", "subText");
+
+    shoutout.innerHTML = stringToAnimatedHTML(mtext, animation);
+    stname.innerHTML = stringToAnimatedHTML(sText, animation);
+
+	document.querySelector("#containerMain").innerHTML = "";
+    document.querySelector("#containerSub").innerHTML = "";
+
+    document.querySelector("#containerMain").appendChild(shoutout);
+    document.querySelector("#containerSub").appendChild(stname);
+}
+
+
+function stringToAnimatedHTML(s, anim) {
+    let stringAsArray = s.split('');
+    stringAsArray = stringAsArray.map((letter) => {
+        return `<span class="animated-letter ${anim}">${letter}</span>`
+    });
+    return stringAsArray.join('');
+  
+};
